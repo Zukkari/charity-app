@@ -48,6 +48,15 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
+  public CartDto getCart(long cartId) {
+    log.info("Fetching cart by id: {}", cartId);
+    var cart = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
+
+    log.info("Found cart with id: {}", cartId);
+    return mapper.map(cart, CartDto.class);
+  }
+
+  @Override
   @Transactional
   public void deleteCart(long cartId) {
     log.info("Deleting cart with id: {}", cartId);

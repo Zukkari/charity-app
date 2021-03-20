@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,6 +43,16 @@ public class CartController {
   public CartDto createBasket() {
     log.info("Creating new cart...");
     return cartService.createNewCart();
+  }
+
+  @Operation(
+      method = "GET",
+      description = "Get entity with provided cart ID",
+      summary = "Get entity that represents the cart with provided cart id",
+      tags = "Cart")
+  @GetMapping("/{cartId}")
+  public CartDto getCart(@PathVariable("cartId") long cartId) {
+    return cartService.getCart(cartId);
   }
 
   @Operation(

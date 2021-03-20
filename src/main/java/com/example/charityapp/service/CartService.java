@@ -14,6 +14,14 @@ public interface CartService {
   CartDto createNewCart();
 
   /**
+   * Get information of the cart with provided cart id
+   *
+   * @param cartId id of the cart to fetch the data for
+   * @return instance of the cart with provided id
+   */
+  CartDto getCart(long cartId);
+
+  /**
    * Delete cart with provided cart id
    *
    * @param cartId id of the cart to delete

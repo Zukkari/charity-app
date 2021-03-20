@@ -123,4 +123,16 @@ class CartServiceImplTest {
     assertThat(response.getId()).isEqualTo(1L);
     assertThat(response.getItems()).isNotEmpty().size().isEqualTo(1);
   }
+
+  @Test
+  void test_get_cart() {
+    var cart = new Cart();
+    given(cartRepository.findById(anyLong())).willReturn(Optional.of(cart));
+
+    var dto = cartService.getCart(1L);
+
+    then(cartRepository).should().findById(eq(1L));
+
+    assertThat(dto).isNotNull();
+  }
 }
