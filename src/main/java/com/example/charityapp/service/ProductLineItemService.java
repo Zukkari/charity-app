@@ -29,4 +29,11 @@ public interface ProductLineItemService {
    * @param item item which booking to release
    */
   void release(ProductLineItem item);
+
+  /**
+   * Purchase this item
+   *
+   * @param item item to set as purchased
+   */
+  void purchase(ProductLineItem item);
 }

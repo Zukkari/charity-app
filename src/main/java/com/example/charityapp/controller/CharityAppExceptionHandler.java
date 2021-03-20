@@ -2,6 +2,7 @@ package com.example.charityapp.controller;
 
 import com.example.charityapp.dto.ErrorDto;
 import com.example.charityapp.exceptions.CartNotFoundException;
+import com.example.charityapp.exceptions.IllegalOrderStateException;
 import com.example.charityapp.exceptions.NoItemAvailableException;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.slf4j.Logger;
@@ -25,9 +26,22 @@ public class CharityAppExceptionHandler {
 
   @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
   @ExceptionHandler(NoItemAvailableException.class)
-  @ApiResponse(responseCode = "417", description = "No available item was found for provided product")
+  @ApiResponse(
+      responseCode = "417",
+      description = "No available item was found for provided product")
   public ErrorDto handleNoLineItem(NoItemAvailableException e) {
     log.debug("No available item was found for provided product: {}", e.getProductId());
     return new ErrorDto("No available item was found for provided product: " + e.getProductId());
+  }
+
+  @ResponseStatus(HttpStatus.CONFLICT)
+  @ExceptionHandler(IllegalOrderStateException.class)
+  @ApiResponse(
+      responseCode = "409",
+      description = "Order is in illegal state and cannot be accepted")
+  public ErrorDto handleIllegalOrderState(IllegalOrderStateException e) {
+    log.debug("Order: {} is in illegal state and will not be accepted", e.getOrderId());
+    return new ErrorDto(
+        "Order: " + e.getOrderId() + " is in illegal state and will not be accepted");
   }
 }

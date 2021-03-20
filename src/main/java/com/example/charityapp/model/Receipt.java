@@ -7,13 +7,15 @@ import java.time.LocalDateTime;
 @Embeddable
 public class Receipt {
 
+  private BigDecimal total;
   private BigDecimal paidAmount;
 
   private LocalDateTime paidTime;
 
   public Receipt() {}
 
-  public Receipt(BigDecimal paidAmount) {
+  public Receipt(BigDecimal total, BigDecimal paidAmount) {
+    this.total = total;
     this.paidAmount = paidAmount;
     this.paidTime = LocalDateTime.now();
   }
@@ -32,5 +34,13 @@ public class Receipt {
 
   public void setPaidTime(LocalDateTime paidTime) {
     this.paidTime = paidTime;
+  }
+
+  public BigDecimal getTotal() {
+    return total;
+  }
+
+  public void setTotal(BigDecimal total) {
+    this.total = total;
   }
 }

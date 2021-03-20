@@ -4,6 +4,7 @@ import com.example.charityapp.dto.CartDto;
 import com.example.charityapp.dto.PaymentDto;
 import com.example.charityapp.dto.ProductLineItemDto;
 import com.example.charityapp.exceptions.CartNotFoundException;
+import com.example.charityapp.exceptions.IllegalOrderStateException;
 import com.example.charityapp.exceptions.NoItemAvailableException;
 import com.example.charityapp.model.Cart;
 import com.example.charityapp.model.LineItemStatus;
@@ -96,7 +97,26 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
+  @Transactional
   public CartDto checkout(long cartId, PaymentDto dto) {
-    throw new UnsupportedOperationException("Not implemented!");
+    log.info("Checking out cart with id: {}", cartId);
+
+    var cart = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
+
+    if (cart.getItems() == null || cart.getItems().isEmpty()) {
+      throw new IllegalOrderStateException(cartId);
+    }
+
+    var amount = dto.getAmount();
+    log.info("The amount paid for the order is: {}", amount);
+
+    var change = cart.acceptOrder(amount);
+    log.info("Customer will receive change of: {}", change);
+
+    for (ProductLineItem item : cart.getItems()) {
+      productLineItemService.purchase(item);
+    }
+
+    return mapper.map(cartRepository.save(cart), CartDto.class);
   }
 }

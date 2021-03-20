@@ -52,7 +52,7 @@ public class Cart {
       throw new InsufficientAmountException(id, toPay, amount);
     }
 
-    this.receipt = new Receipt(amount);
+    this.receipt = new Receipt(toPay, amount);
     this.modified = LocalDateTime.now();
 
     return amount.subtract(toPay);

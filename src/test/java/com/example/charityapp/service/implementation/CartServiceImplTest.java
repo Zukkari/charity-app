@@ -1,12 +1,16 @@
 package com.example.charityapp.service.implementation;
 
 import com.example.charityapp.dto.CartDto;
+import com.example.charityapp.dto.PaymentDto;
 import com.example.charityapp.dto.ProductLineItemDto;
 import com.example.charityapp.exceptions.CartNotFoundException;
+import com.example.charityapp.exceptions.IllegalOrderStateException;
 import com.example.charityapp.exceptions.NoItemAvailableException;
 import com.example.charityapp.model.Cart;
 import com.example.charityapp.model.LineItemStatus;
+import com.example.charityapp.model.Product;
 import com.example.charityapp.model.ProductLineItem;
+import com.example.charityapp.module.CharityModelMapperModule;
 import com.example.charityapp.repository.CartRepository;
 import com.example.charityapp.service.CartService;
 import com.example.charityapp.service.ProductLineItemService;
@@ -14,6 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -39,8 +44,10 @@ class CartServiceImplTest {
   @BeforeEach
   void setUp() {
     this.cartRepository = mock(CartRepository.class);
-    this.mapper = spy(new ModelMapper());
+    this.mapper = new ModelMapper();
     this.productLineItemService = mock(ProductLineItemService.class);
+
+    mapper.registerModule(new CharityModelMapperModule());
 
     this.cartService = new CartServiceImpl(productLineItemService, cartRepository, mapper);
   }
@@ -54,7 +61,6 @@ class CartServiceImplTest {
     var dto = cartService.createNewCart();
 
     then(cartRepository).should().save(any());
-    then(mapper).should().map(eq(cart), eq(CartDto.class));
 
     assertThat(dto).isNotNull();
     assertThat(dto.getItems()).isNull();
@@ -134,5 +140,52 @@ class CartServiceImplTest {
     then(cartRepository).should().findById(eq(1L));
 
     assertThat(dto).isNotNull();
+  }
+
+  @Test
+  void test_checkout_no_cart() {
+    var payment = new PaymentDto();
+
+    given(cartRepository.findById(anyLong())).willReturn(Optional.empty());
+
+    assertThrows(CartNotFoundException.class, () -> cartService.checkout(1L, payment));
+  }
+
+  @Test
+  void test_checkout_no_items() {
+    var cart = new Cart();
+
+    given(cartRepository.findById(anyLong())).willReturn(Optional.of(cart));
+
+    var dto = new PaymentDto();
+
+    assertThrows(IllegalOrderStateException.class, () -> cartService.checkout(1L, dto));
+  }
+
+  @Test
+  void test_checkout_ok() {
+    var cart =new Cart();
+    var item = new ProductLineItem();
+    var product = new Product();
+    product.setPrice(BigDecimal.TEN);
+    item.setProduct(product);
+
+    cart.addItem(item);
+
+    given(cartRepository.findById(anyLong())).willReturn(Optional.of(cart));
+    given(cartRepository.save(any())).willReturn(cart);
+
+    var dto = new PaymentDto();
+    dto.setAmount(BigDecimal.TEN);
+
+    var cartDto = cartService.checkout(1L, dto);
+
+    then(cartRepository).should().findById(eq(1L));
+    then(productLineItemService).should().purchase(eq(item));
+    then(cartRepository).should().save(eq(cart));
+
+    assertThat(cartDto.getPaidAmount()).isEqualTo(BigDecimal.TEN);
+    assertThat(cartDto.getPaidTime()).isBefore(LocalDateTime.now());
+    assertThat(cartDto.getTotal()).isEqualTo(BigDecimal.TEN);
   }
 }

@@ -48,7 +48,7 @@ class CartDtoTest {
 
     cart.setItems(items);
 
-    var receipt = new Receipt(BigDecimal.TEN);
+    var receipt = new Receipt(BigDecimal.TEN, BigDecimal.TEN);
     cart.setReceipt(receipt);
 
     var dto = mapper.map(cart, CartDto.class);

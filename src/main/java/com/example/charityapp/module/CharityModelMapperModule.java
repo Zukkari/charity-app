@@ -38,5 +38,11 @@ public class CharityModelMapperModule implements Module {
           return receipt == null ? null : receipt.getPaidTime();
         },
         CartDto::setPaidTime);
+    typeMap.addMapping(
+        src -> {
+          var receipt = src.getReceipt();
+          return receipt == null ? null : receipt.getTotal();
+        },
+        CartDto::setTotal);
   }
 }

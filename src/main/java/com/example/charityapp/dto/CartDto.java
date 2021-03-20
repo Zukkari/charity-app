@@ -11,6 +11,7 @@ public class CartDto {
   private long id;
   private List<ProductLineItemDto> items;
 
+  private BigDecimal total;
   private BigDecimal paidAmount;
   private LocalDateTime paidTime;
 
@@ -44,5 +45,13 @@ public class CartDto {
 
   public void setPaidTime(LocalDateTime paidTime) {
     this.paidTime = paidTime;
+  }
+
+  public BigDecimal getTotal() {
+    return total;
+  }
+
+  public void setTotal(BigDecimal total) {
+    this.total = total;
   }
 }

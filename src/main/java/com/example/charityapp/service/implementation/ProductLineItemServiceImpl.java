@@ -48,4 +48,14 @@ public class ProductLineItemServiceImpl implements ProductLineItemService {
 
     log.info("Item with id: {} was released from booking", item.getId());
   }
+
+  @Override
+  public void purchase(ProductLineItem item) {
+    log.info("Marking item: {} as sold", item.getId());
+
+    item.setLineItemStatus(LineItemStatus.SOLD);
+    productLineItemRepository.save(item);
+
+    log.info("Item with id: {} was sold", item.getId());
+  }
 }
