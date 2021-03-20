@@ -48,6 +48,7 @@ public class Basket {
     }
 
     this.receipt = new Receipt(amount);
+    this.modified = LocalDateTime.now();
 
     return amount.subtract(toPay);
   }
