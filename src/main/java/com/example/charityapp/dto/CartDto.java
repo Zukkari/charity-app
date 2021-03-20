@@ -1,9 +1,12 @@
 package com.example.charityapp.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Schema(name = "Cart", description = "Entity representing the cart")
 public class CartDto {
   private long id;
   private List<ProductLineItemDto> items;

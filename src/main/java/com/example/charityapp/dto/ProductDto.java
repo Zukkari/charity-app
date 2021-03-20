@@ -1,7 +1,10 @@
 package com.example.charityapp.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.math.BigDecimal;
 
+@Schema(name = "Product", description = "Entity representing the product")
 public class ProductDto {
 
   private long productId;

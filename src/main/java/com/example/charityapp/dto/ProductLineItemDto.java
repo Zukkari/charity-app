@@ -1,9 +1,11 @@
 package com.example.charityapp.dto;
 
 import com.example.charityapp.model.LineItemStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.math.BigDecimal;
 
+@Schema(name = "Product line item", description = "Entity representing product line item")
 public class ProductLineItemDto {
   private long id;
   private String productName;
