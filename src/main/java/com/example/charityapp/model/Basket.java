@@ -19,11 +19,11 @@ public class Basket {
 
   private LocalDateTime modified;
 
-  @OneToMany private List<BasketLineItem> items;
+  @OneToMany private List<ProductLineItem> items;
 
   @Embedded private Receipt receipt;
 
-  public void addItem(BasketLineItem item) {
+  public void addItem(ProductLineItem item) {
     modified = LocalDateTime.now();
     items.add(item);
   }
@@ -39,7 +39,7 @@ public class Basket {
   public BigDecimal acceptOrder(BigDecimal amount) {
     var toPay =
         items.stream()
-            .map(BasketLineItem::getProduct)
+            .map(ProductLineItem::getProduct)
             .map(Product::getPrice)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
@@ -77,11 +77,11 @@ public class Basket {
     this.modified = modified;
   }
 
-  public List<BasketLineItem> getItems() {
+  public List<ProductLineItem> getItems() {
     return items;
   }
 
-  public void setItems(List<BasketLineItem> items) {
+  public void setItems(List<ProductLineItem> items) {
     this.items = items;
   }
 

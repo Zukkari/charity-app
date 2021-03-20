@@ -13,6 +13,13 @@ public class Product {
 
   private BigDecimal price;
 
+  public Product() {}
+
+  public Product(String name, BigDecimal price) {
+    this.name = name;
+    this.price = price;
+  }
+
   public long getId() {
     return id;
   }

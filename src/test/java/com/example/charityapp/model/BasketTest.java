@@ -18,14 +18,14 @@ class BasketTest {
   @BeforeEach
   void setUp() {
     basket = new Basket();
-    var basketLineItems = new ArrayList<BasketLineItem>();
+    var basketLineItems = new ArrayList<ProductLineItem>();
 
     var product = new Product();
     product.setId(1);
     product.setName("Best product");
     product.setPrice(BigDecimal.TEN);
 
-    var item = new BasketLineItem();
+    var item = new ProductLineItem();
 
     item.setId(1);
     item.setProduct(product);
