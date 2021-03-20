@@ -40,6 +40,11 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.5.2</version>
+        </dependency>
 
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -53,4 +58,9 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+
+        </plugins>
+    </build>
 </project>
