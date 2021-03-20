@@ -17,6 +17,8 @@
 
     <properties>
         <java.version>11</java.version>
+        <open.api.version>1.5.2</open.api.version>
+        <modelmapper.version>2.3.9</modelmapper.version>
     </properties>
 
     <dependencies>
@@ -43,7 +45,12 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.5.2</version>
+            <version>${open.api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${modelmapper.version}</version>
         </dependency>
 
         <dependency>

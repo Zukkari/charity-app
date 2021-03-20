@@ -1,8 +1,8 @@
 package com.example.charityapp.repository;
 
-import com.example.charityapp.model.Basket;
+import com.example.charityapp.model.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BasketRepository extends JpaRepository<Basket, Long> {}
+public interface CartRepository extends JpaRepository<Cart, Long> {}

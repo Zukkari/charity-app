@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class BasketTest {
+class CartTest {
 
-  private Basket basket;
+  private Cart cart;
 
   @BeforeEach
   void setUp() {
-    basket = new Basket();
+    cart = new Cart();
     var basketLineItems = new ArrayList<ProductLineItem>();
 
     var product = new Product();
@@ -30,16 +30,16 @@ class BasketTest {
     item.setId(1);
     item.setProduct(product);
 
-    basket.setItems(basketLineItems);
-    basket.addItem(item);
+    cart.setItems(basketLineItems);
+    cart.addItem(item);
   }
 
   @Test
   void test_accept_ok_amount() {
     var now = LocalDateTime.now();
 
-    var remainder = basket.acceptOrder(BigDecimal.TEN);
-    var receipt = basket.getReceipt();
+    var remainder = cart.acceptOrder(BigDecimal.TEN);
+    var receipt = cart.getReceipt();
 
     assertThat(remainder).isEqualTo(BigDecimal.ZERO);
     assertThat(receipt.getPaidAmount()).isEqualTo(BigDecimal.TEN);
@@ -48,18 +48,18 @@ class BasketTest {
 
   @Test
   void test_bad_amount() {
-    assertThrows(InsufficientAmountException.class, () -> basket.acceptOrder(BigDecimal.ZERO));
+    assertThrows(InsufficientAmountException.class, () -> cart.acceptOrder(BigDecimal.ZERO));
   }
 
   @Test
   void test_add_item() {
-    var modified = basket.getModified();
+    var modified = cart.getModified();
 
-    var item = basket.getItems().get(0);
+    var item = cart.getItems().get(0);
 
-    basket.addItem(item);
+    cart.addItem(item);
 
-    var newModified = basket.getModified();
+    var newModified = cart.getModified();
 
     assertThat(newModified).isAfterOrEqualTo(modified);
   }

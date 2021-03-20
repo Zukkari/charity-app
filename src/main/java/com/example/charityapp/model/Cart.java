@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-public class Basket {
+public class Cart {
 
   @Id private long id;
 
