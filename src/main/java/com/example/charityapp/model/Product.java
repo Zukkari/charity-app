@@ -1,15 +1,10 @@
 package com.example.charityapp.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.math.BigDecimal;
 
 @Entity
-@NoArgsConstructor
-@Data
 public class Product {
 
   @Id private long id;
@@ -17,4 +12,28 @@ public class Product {
   private String name;
 
   private BigDecimal price;
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public BigDecimal getPrice() {
+    return price;
+  }
+
+  public void setPrice(BigDecimal price) {
+    this.price = price;
+  }
 }

@@ -4,12 +4,13 @@ create table basket
     created     timestamp,
     modified    timestamp,
     paid_amount numeric(19, 2),
+    paid_time   timestamp,
     primary key (id)
 );
 create table basket_items
 (
     basket_id int8 not null,
-    items_id int8 not null
+    items_id  int8 not null
 );
 create table basket_line_item
 (
@@ -25,10 +26,10 @@ create table product
     primary key (id)
 );
 alter table if exists basket_items
-    add constraint UK_d0vxbj4gqklaa3ro4kja2h72x unique (items_id);
+    add constraint UK_pypji3f11i6fuc9b7tkfo1u8r unique (items_id);
 alter table if exists basket_items
-    add constraint FKmhurnhd8gawv0gd97j599t7vu foreign key (items_id) references basket_line_item;
+    add constraint FKo5jhkyu1c3047it01aer4oeo8 foreign key (items_id) references basket_line_item;
 alter table if exists basket_items
-    add constraint FKdy6l1ieu09exdjope704jwo1e foreign key (basket_id) references basket;
+    add constraint FKfyqrlx96qh891kd8g5y4uc7rp foreign key (basket_id) references basket;
 alter table if exists basket_line_item
-    add constraint FK9ju2t8oi6c26mtfhltwpwhfpv foreign key (product_id) references product;
+    add constraint FKnh3ei2yrbdv2p1s4n9gisdagv foreign key (product_id) references product;
