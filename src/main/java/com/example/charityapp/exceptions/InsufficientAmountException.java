@@ -3,18 +3,18 @@ package com.example.charityapp.exceptions;
 import java.math.BigDecimal;
 
 public class InsufficientAmountException extends RuntimeException {
-  private final long orderId;
+  private final long cartId;
   private final BigDecimal toPay;
   private final BigDecimal offered;
 
-  public InsufficientAmountException(long orderId, BigDecimal toPay, BigDecimal offered) {
-    this.orderId = orderId;
+  public InsufficientAmountException(long cartId, BigDecimal toPay, BigDecimal offered) {
+    this.cartId = cartId;
     this.toPay = toPay;
     this.offered = offered;
   }
 
-  public long getOrderId() {
-    return orderId;
+  public long getCartId() {
+    return cartId;
   }
 
   public BigDecimal getToPay() {

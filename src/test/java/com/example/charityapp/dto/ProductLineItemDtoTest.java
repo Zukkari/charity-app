@@ -40,5 +40,6 @@ class ProductLineItemDtoTest {
     assertThat(dto.getId()).isEqualTo(1);
     assertThat(dto.getItemStatus()).isEqualTo(LineItemStatus.OPEN);
     assertThat(dto.getProductName()).isEqualTo("Big product");
+    assertThat(dto.getProductId()).isEqualTo(2L);
   }
 }

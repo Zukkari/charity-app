@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,8 +25,12 @@ public class Cart {
   @Embedded private Receipt receipt;
 
   public void addItem(ProductLineItem item) {
-    modified = LocalDateTime.now();
+    if (items == null) {
+      items = new ArrayList<>();
+    }
+
     items.add(item);
+    modified = LocalDateTime.now();
   }
 
   /**

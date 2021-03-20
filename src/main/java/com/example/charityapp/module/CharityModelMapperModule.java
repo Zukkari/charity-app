@@ -21,6 +21,7 @@ public class CharityModelMapperModule implements Module {
     var typeMap = mapper.createTypeMap(ProductLineItem.class, ProductLineItemDto.class);
     typeMap.addMapping(src -> src.getProduct().getName(), ProductLineItemDto::setProductName);
     typeMap.addMapping(src -> src.getProduct().getPrice(), ProductLineItemDto::setPrice);
+    typeMap.addMapping(src -> src.getProduct().getId(), ProductLineItemDto::setProductId);
   }
 
   private void updateCartMapping(ModelMapper mapper) {
