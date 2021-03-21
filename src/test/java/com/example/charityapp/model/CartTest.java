@@ -43,7 +43,7 @@ class CartTest {
 
     assertThat(remainder).isEqualTo(BigDecimal.ZERO);
     assertThat(receipt.getPaidAmount()).isEqualTo(BigDecimal.TEN);
-    assertThat(receipt.getPaidTime()).isAfter(now);
+    assertThat(receipt.getPaidTime()).isAfterOrEqualTo(now);
   }
 
   @Test
