@@ -3,6 +3,7 @@ package com.example.charityapp.service.implementation;
 import com.example.charityapp.dto.CartDto;
 import com.example.charityapp.dto.PaymentDto;
 import com.example.charityapp.dto.ProductLineItemDto;
+import com.example.charityapp.events.EventEmitter;
 import com.example.charityapp.exceptions.CartNotFoundException;
 import com.example.charityapp.exceptions.IllegalOrderStateException;
 import com.example.charityapp.exceptions.NoItemAvailableException;
@@ -29,14 +30,18 @@ public class CartServiceImpl implements CartService {
   private final CartRepository cartRepository;
   private final ModelMapper mapper;
 
+  private final EventEmitter emitter;
+
   @Autowired
   public CartServiceImpl(
       ProductLineItemService productLineItemService,
       CartRepository cartRepository,
-      ModelMapper mapper) {
+      ModelMapper mapper,
+      EventEmitter emitter) {
     this.productLineItemService = productLineItemService;
     this.cartRepository = cartRepository;
     this.mapper = mapper;
+    this.emitter = emitter;
   }
 
   @Override
@@ -69,6 +74,7 @@ public class CartServiceImpl implements CartService {
 
     for (ProductLineItem item : cart.getItems()) {
       productLineItemService.release(item);
+      emitter.publishItemReleasedEvent(item);
     }
 
     cartRepository.deleteById(cartId);
@@ -92,6 +98,7 @@ public class CartServiceImpl implements CartService {
 
     cart.addItem(lineItem);
     productLineItemService.book(lineItem);
+    emitter.publishItemBookedEvent(lineItem);
 
     return mapper.map(cartRepository.save(cart), CartDto.class);
   }

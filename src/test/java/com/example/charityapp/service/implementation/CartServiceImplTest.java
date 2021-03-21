@@ -1,8 +1,8 @@
 package com.example.charityapp.service.implementation;
 
-import com.example.charityapp.dto.CartDto;
 import com.example.charityapp.dto.PaymentDto;
 import com.example.charityapp.dto.ProductLineItemDto;
+import com.example.charityapp.events.EventEmitter;
 import com.example.charityapp.exceptions.CartNotFoundException;
 import com.example.charityapp.exceptions.IllegalOrderStateException;
 import com.example.charityapp.exceptions.NoItemAvailableException;
@@ -49,7 +49,8 @@ class CartServiceImplTest {
 
     mapper.registerModule(new CharityModelMapperModule());
 
-    this.cartService = new CartServiceImpl(productLineItemService, cartRepository, mapper);
+    var emitter = mock(EventEmitter.class);
+    this.cartService = new CartServiceImpl(productLineItemService, cartRepository, mapper, emitter);
   }
 
   @Test
@@ -164,7 +165,7 @@ class CartServiceImplTest {
 
   @Test
   void test_checkout_ok() {
-    var cart =new Cart();
+    var cart = new Cart();
     var item = new ProductLineItem();
     var product = new Product();
     product.setPrice(BigDecimal.TEN);
