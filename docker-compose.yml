@@ -7,3 +7,28 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - 5432:5432
+    networks:
+      - internal
+    container_name: 'postgres'
+
+  backend:
+    build:
+      dockerfile: docker/Dockerfile
+      context: .
+    ports:
+      - 8080:8080
+    volumes:
+      - ./conf/:/conf
+    networks:
+      - internal
+    depends_on:
+      - postgres
+
+networks:
+  internal:
+    external: false
+
+volumes:
+  conf:
+    name: conf
+    external: true
