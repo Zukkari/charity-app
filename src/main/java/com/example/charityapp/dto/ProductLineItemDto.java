@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
-@Schema(name = "Product line item", description = "Entity representing product line item")
+@Schema(name = "ProductLineItem", description = "Entity representing product line item")
 public class ProductLineItemDto {
 
   private long id;
