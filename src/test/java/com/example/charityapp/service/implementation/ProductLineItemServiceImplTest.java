@@ -29,7 +29,7 @@ class ProductLineItemServiceImplTest {
 
     then(productLineItemRepository)
         .should()
-        .findProductLineItemByProductIdAndLineItemStatus(eq(1L), eq(LineItemStatus.OPEN));
+        .findProductLineItemByProductIdAndLineItemStatus(eq(1L), eq(LineItemStatus.OPEN.name()));
   }
 
   @Test

@@ -40,7 +40,7 @@ public class CartController {
       summary = "Creates new instance of cart",
       tags = "Cart")
   @PostMapping
-  public CartDto createBasket() {
+  public CartDto createNewCart() {
     log.info("Creating new cart...");
     return cartService.createNewCart();
   }

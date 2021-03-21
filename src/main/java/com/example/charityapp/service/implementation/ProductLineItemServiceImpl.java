@@ -26,7 +26,7 @@ public class ProductLineItemServiceImpl implements ProductLineItemService {
   public Optional<ProductLineItem> getLineItem(long productId, LineItemStatus status) {
     log.info("Looking for line item for product: {} with status: {}", productId, status);
     return productLineItemRepository.findProductLineItemByProductIdAndLineItemStatus(
-        productId, status);
+        productId, status.name());
   }
 
   @Override

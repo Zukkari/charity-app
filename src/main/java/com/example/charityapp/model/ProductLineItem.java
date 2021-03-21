@@ -3,13 +3,14 @@ package com.example.charityapp.model;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class ProductLineItem {
 
-  @Id private long id;
+  @Id @GeneratedValue private long id;
 
   @ManyToOne private Product product;
 

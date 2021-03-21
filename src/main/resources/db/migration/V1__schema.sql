@@ -1,3 +1,4 @@
+create sequence hibernate_sequence start 1 increment 1;
 create table cart
 (
     id          int8 not null,
@@ -5,18 +6,13 @@ create table cart
     modified    timestamp,
     paid_amount numeric(19, 2),
     paid_time   timestamp,
+    total       numeric(19, 2),
     primary key (id)
 );
 create table cart_items
 (
-    cart_id int8 not null,
-    items_id  int8 not null
-);
-create table product_line_item
-(
-    id         int8 not null,
-    product_id int8,
-    primary key (id)
+    cart_id  int8 not null,
+    items_id int8 not null
 );
 create table product
 (
@@ -25,11 +21,18 @@ create table product
     price numeric(19, 2),
     primary key (id)
 );
+create table product_line_item
+(
+    id               int8 not null,
+    line_item_status varchar(255),
+    product_id       int8,
+    primary key (id)
+);
 alter table if exists cart_items
-    add constraint UK_pypji3f11i6fuc9b7tkfo1u8r unique (items_id);
+    add constraint UK_383kkp3af9dpn91t406oqe9n1 unique (items_id);
 alter table if exists cart_items
-    add constraint FKo5jhkyu1c3047it01aer4oeo8 foreign key (items_id) references product_line_item;
+    add constraint FKfypwlqb5ec95k6ple3q6hwgag foreign key (items_id) references product_line_item;
 alter table if exists cart_items
-    add constraint FKfyqrlx96qh891kd8g5y4uc7rp foreign key (cart_id) references cart;
+    add constraint FK99e0am9jpriwxcm6is7xfedy3 foreign key (cart_id) references cart;
 alter table if exists product_line_item
-    add constraint FKnh3ei2yrbdv2p1s4n9gisdagv foreign key (product_id) references product;
+    add constraint FKoj8l343i67b12b6n2wueecu3i foreign key (product_id) references product;

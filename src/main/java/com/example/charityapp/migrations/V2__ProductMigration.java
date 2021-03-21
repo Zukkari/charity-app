@@ -2,7 +2,6 @@ package com.example.charityapp.migrations;
 
 import org.flywaydb.core.api.migration.BaseJavaMigration;
 import org.flywaydb.core.api.migration.Context;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -33,23 +32,14 @@ public class V2__ProductMigration extends BaseJavaMigration {
             new ProductItem("Jacket", 4.00),
             new ProductItem("Toy", 1.00));
 
-    int id = getNextId(template);
     for (ProductItem item : items) {
-      insert(template, id, item);
-      id++;
+      insert(template, getNextId(template), item);
     }
   }
 
   private int getNextId(JdbcTemplate template) {
-    int id;
-    try {
-      var dbId =
-          template.queryForObject("select id from product order by id desc limit 1", int.class);
-      id = dbId == null ? 0 : dbId;
-    } catch (EmptyResultDataAccessException e) {
-      id = 0;
-    }
-    return id + 1;
+    var id = template.queryForObject("select nextval('hibernate_sequence');", Integer.class);
+    return id == null ? 0 : id;
   }
 
   private void insert(JdbcTemplate template, int id, ProductItem item) {
