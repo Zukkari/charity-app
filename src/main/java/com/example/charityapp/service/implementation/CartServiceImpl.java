@@ -74,7 +74,8 @@ public class CartServiceImpl implements CartService {
 
     for (ProductLineItem item : cart.getItems()) {
       productLineItemService.release(item);
-      emitter.publishItemReleasedEvent(item);
+      emitter.publishItemReleasedEvent(
+          item, productLineItemService.countOpenLineItem(item.getProduct().getId()));
     }
 
     cartRepository.deleteById(cartId);
@@ -98,7 +99,7 @@ public class CartServiceImpl implements CartService {
 
     cart.addItem(lineItem);
     productLineItemService.book(lineItem);
-    emitter.publishItemBookedEvent(lineItem);
+    emitter.publishItemBookedEvent(lineItem, productLineItemService.countOpenLineItem(productId));
 
     return mapper.map(cartRepository.save(cart), CartDto.class);
   }

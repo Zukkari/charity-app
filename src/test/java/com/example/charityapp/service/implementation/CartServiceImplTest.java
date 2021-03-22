@@ -73,6 +73,7 @@ class CartServiceImplTest {
   void test_delete_cart() {
     var cart = new Cart();
     var item = new ProductLineItem();
+    item.setProduct(new Product());
     cart.setItems(List.of(item));
 
     given(cartRepository.findById(any())).willReturn(Optional.of(cart));

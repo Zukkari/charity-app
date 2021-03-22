@@ -30,6 +30,11 @@ public class ProductLineItemServiceImpl implements ProductLineItemService {
   }
 
   @Override
+  public long countOpenLineItem(long productId) {
+    return productLineItemRepository.countByProductId(productId);
+  }
+
+  @Override
   public void book(ProductLineItem item) {
     log.info("Booking item with id: {}", item.getId());
 

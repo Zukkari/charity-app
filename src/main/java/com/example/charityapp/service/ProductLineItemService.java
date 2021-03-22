@@ -17,6 +17,14 @@ public interface ProductLineItemService {
   Optional<ProductLineItem> getLineItem(long productId, LineItemStatus status);
 
   /**
+   * Count line items for provided product id
+   *
+   * @param productId id of the product to count
+   * @return number of open line items with provided product id
+   */
+  long countOpenLineItem(long productId);
+
+  /**
    * Book the provided line item
    *
    * @param item item to book
