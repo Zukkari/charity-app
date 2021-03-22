@@ -5,9 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.Set;
 
 @Component
 public class EventPushJob implements Runnable {
@@ -49,10 +52,17 @@ public class EventPushJob implements Runnable {
     try {
       var serializedEvent = mapper.writeValueAsString(event);
       var sseEvent = SseEmitter.event().data(serializedEvent, MediaType.APPLICATION_JSON).build();
-
       for (SseEmitter emitter : eventEmitter.getEmitters()) {
-        emitter.send(sseEvent);
+        push(sseEvent, emitter);
       }
+    } catch (IOException e) {
+      throw new UncheckedIOException("Failed to serialize event: " + event, e);
+    }
+  }
+
+  private void push(Set<ResponseBodyEmitter.DataWithMediaType> sseEvent, SseEmitter emitter) {
+    try {
+      emitter.send(sseEvent);
     } catch (IOException e) {
       log.trace("Failed to deliver event", e);
     }
