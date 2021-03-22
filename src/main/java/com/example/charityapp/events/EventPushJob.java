@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 
 @Component
 public class EventPushJob implements Runnable {
@@ -55,7 +54,7 @@ public class EventPushJob implements Runnable {
         emitter.send(sseEvent);
       }
     } catch (IOException e) {
-      throw new UncheckedIOException(e);
+      log.trace("Failed to deliver event", e);
     }
   }
 }
