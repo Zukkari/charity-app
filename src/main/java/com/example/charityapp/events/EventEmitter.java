@@ -1,6 +1,7 @@
 package com.example.charityapp.events;
 
 import com.example.charityapp.model.ProductLineItem;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 /**
  * Simple event publisher interface. Such approach is quite error prone, so it would be better to
@@ -22,4 +23,11 @@ public interface EventEmitter {
    * @param item item that was released from booking
    */
   void publishItemReleasedEvent(ProductLineItem item);
+
+  /**
+   * Register this emitter to receive events
+   *
+   * @param emitter to register
+   */
+  void register(SseEmitter emitter);
 }

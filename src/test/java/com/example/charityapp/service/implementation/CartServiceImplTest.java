@@ -186,7 +186,7 @@ class CartServiceImplTest {
     then(cartRepository).should().save(eq(cart));
 
     assertThat(cartDto.getPaidAmount()).isEqualTo(BigDecimal.TEN);
-    assertThat(cartDto.getPaidTime()).isBefore(LocalDateTime.now());
+    assertThat(cartDto.getPaidTime()).isBeforeOrEqualTo(LocalDateTime.now());
     assertThat(cartDto.getTotal()).isEqualTo(BigDecimal.TEN);
   }
 }

@@ -1,5 +1,6 @@
 package com.example.charityapp.controller;
 
+import com.example.charityapp.events.EventEmitter;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -19,11 +20,11 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @CrossOrigin
 public class EventStreamController {
 
-  private final SseEmitter emitter;
+  private final EventEmitter eventEmitter;
 
   @Autowired
-  public EventStreamController(SseEmitter emitter) {
-    this.emitter = emitter;
+  public EventStreamController(EventEmitter eventEmitter) {
+    this.eventEmitter = eventEmitter;
   }
 
   @Operation(
@@ -34,6 +35,8 @@ public class EventStreamController {
       tags = "Events")
   @GetMapping("/stream")
   public SseEmitter streamEvents() {
-    return emitter;
+    var sseEmitter = new SseEmitter();
+    eventEmitter.register(sseEmitter);
+    return sseEmitter;
   }
 }
