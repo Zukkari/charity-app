@@ -28,15 +28,6 @@ public class EventPushJob implements Runnable {
   public void run() {
     log.trace("Pushing async events");
 
-    var emitters = eventEmitter.getEmitters();
-    log.trace("Emitters before clean up: {}", emitters.size());
-
-    for (SseEmitter sseEmitter : eventEmitter.getForRemoval()) {
-      emitters.remove(sseEmitter);
-    }
-
-    log.trace("Finished clean up of emitters, new size: {}", emitters.size());
-
     var queue = eventEmitter.getDeque();
     while (true) {
       var event = queue.poll();
@@ -44,8 +35,11 @@ public class EventPushJob implements Runnable {
         break;
       }
 
+      log.trace("Pushing event: {}", event);
       push(event);
     }
+
+    log.trace("Finished pushing events");
   }
 
   public void push(ProductEvent event) {
@@ -63,7 +57,7 @@ public class EventPushJob implements Runnable {
   private void push(Set<ResponseBodyEmitter.DataWithMediaType> sseEvent, SseEmitter emitter) {
     try {
       emitter.send(sseEvent);
-    } catch (IOException e) {
+    } catch (Exception e) {
       log.trace("Failed to deliver event", e);
     }
   }

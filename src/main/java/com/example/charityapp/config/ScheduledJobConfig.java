@@ -25,7 +25,7 @@ public class ScheduledJobConfig {
     cartDeletionJob.run();
   }
 
-  @Scheduled(fixedRate = 100)
+  @Scheduled(fixedRate = 2000)
   public void runPublishEvents() {
     eventPushJob.run();
   }

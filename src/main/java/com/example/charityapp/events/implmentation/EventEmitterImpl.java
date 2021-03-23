@@ -10,21 +10,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.ArrayDeque;
+import java.util.Collection;
 import java.util.Deque;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
 public class EventEmitterImpl implements EventEmitter {
   private static final Logger log = LoggerFactory.getLogger(EventEmitterImpl.class);
 
-  private final Set<SseEmitter> emitters = new HashSet<>();
-
   private final Deque<ProductEvent> deque = new ArrayDeque<>(1000);
 
-  private final List<SseEmitter> forRemoval = new CopyOnWriteArrayList<>();
+  private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
   @Override
   public void publishItemBookedEvent(ProductLineItem item, long newQuantity) {
@@ -32,7 +29,8 @@ public class EventEmitterImpl implements EventEmitter {
 
     var domainEvent =
         new ProductEvent(item.getProduct().getId(), ProductEventKind.BOOKED, newQuantity);
-    deque.push(domainEvent);
+
+    deque.add(domainEvent);
   }
 
   @Override
@@ -41,27 +39,22 @@ public class EventEmitterImpl implements EventEmitter {
 
     var domainEvent =
         new ProductEvent(item.getProduct().getId(), ProductEventKind.RELEASED, newQuantity);
-    deque.push(domainEvent);
+    deque.add(domainEvent);
   }
 
   @Override
   public void register(SseEmitter emitter) {
-    emitter.onCompletion(() -> forRemoval.add(emitter));
+    emitter.onCompletion(() -> emitters.remove(emitter));
     emitters.add(emitter);
   }
 
   @Override
-  public Set<SseEmitter> getEmitters() {
+  public Collection<SseEmitter> getEmitters() {
     return emitters;
   }
 
   @Override
   public Deque<ProductEvent> getDeque() {
     return deque;
-  }
-
-  @Override
-  public List<SseEmitter> getForRemoval() {
-    return forRemoval;
   }
 }

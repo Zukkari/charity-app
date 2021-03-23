@@ -3,9 +3,8 @@ package com.example.charityapp.events;
 import com.example.charityapp.model.ProductLineItem;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.Collection;
 import java.util.Deque;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Simple event publisher interface. Such approach is quite error prone, so it would be better to
@@ -37,9 +36,7 @@ public interface EventEmitter {
    */
   void register(SseEmitter emitter);
 
-  Set<SseEmitter> getEmitters();
+  Collection<SseEmitter> getEmitters();
 
   Deque<ProductEvent> getDeque();
-
-  List<SseEmitter> getForRemoval();
 }
